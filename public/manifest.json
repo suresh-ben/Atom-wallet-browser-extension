@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "Atom wallet",
+    "description": "this wallet interacts with Atom contract deployed on sepolia network",
+    "version": "1.0",
+    "icons": {
+        "64": "./images/icon64.png"
+    },
+    "browser_action": {
+        "default_icon": "./images/icon64.png"
+    },
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "storage"
+    ]
+}

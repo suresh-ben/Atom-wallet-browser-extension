@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    margin-bottom: 15px;
+}
+
+.container {
+    width: 350px;
+    display: grid;
+}
+
+.nav {
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: gainsboro;
+    padding: 5px;
+}
+
+.nav img {
+    height: 40px;
+}
+
+.nav button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 18px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    border-width: 1px;
+    margin: auto 0;
+}
+
+.nav input[type='radio'] {
+    accent-color: green;
+}
+
+.nav input {
+    margin: 0 7px 0px -7px;
+    height: 8px;
+}
+
+h2 {
+    margin: 20px;
+}
+
+.amount {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+.conversion {
+    margin-bottom: 20px;
+}
+
+.links-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inter-links {
+    margin: 1px 10px;
+}
+
+.inter-links img {
+    height: 40px;
+}
+
+.inter-links {
+    text-decoration: none;
+}
+
+.send-body a {
+    margin-left: 10px;
+    background-color: azure;
+}
+
+.send-body img {
+    height: 20px;
+    border-radius: 5px;
+}
+
+.send-area input {
+    border-radius: 3px;
+    padding: 0 5px;
+    margin-bottom: 10px;
+}
+
+.send-area button {
+    border-radius: 5px;
+}
+
+.start-body {
+    display: grid;
+}
+
+.start-body input {
+    border-radius: 3px;
+    padding: 0 5px;
+    width: 250px;
+}
+
+.start-body button {
+    border-radius: 5px;
+    margin: 10px 5px;
+    padding: 0 5px;
+}

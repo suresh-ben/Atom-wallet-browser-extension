@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 import Start from '../Start/Start.jsx';
 import Body from '../Body/Body.jsx';
 import Send from '../Send/Send.jsx';
+import Atom_abi from './atom_erc20.jsx'
 
 function Main() {
     /**
@@ -21,10 +22,7 @@ function Main() {
             if(result.atomKey === undefined || result.atomKey == "")
                 SetIsLogged(false);
             else
-            {
-                console.log("Key is : " + result.atomKey);
                 SetIsLogged(true);
-            }
         });
     }
     LoadUserDetails();
@@ -37,44 +35,70 @@ function Main() {
     }
 
     //conection to contract 
-    // async function connectToAtom() {
+    const [ atom_contract, SetAtomContract ] = useState("");
+    const [ ownerWallet, SetOwnerWallet ] = useState("");
+    const [ ownerBalance, SetOwnerBalance ] = useState(0);
+    const [ ownerAddress, SetOwnerAddress ] = useState("");
+
+    async function connectToAtom() {
         
-    //     //network provider -- sepolia network
-    //     let url = "https://rpc.sepolia.org/";
-    //     const provider = new ethers.providers.JsonRpcProvider(url);
+        //network provider -- sepolia network
+        let url = "https://rpc.sepolia.org/";
+        const provider = new ethers.providers.JsonRpcProvider(url);
         
-    //     let atomKey;
-    //     chrome.storage.local.get(["atomKey"]).then((result) => {
-    //         if(result.atomKey !== undefined && result.atomKey != "")
-    //             atomKey = result.atomKey;
-    //     });
-    //     //wallet to pay gas fee
-    //     const wallet = new ethers.Wallet(atomKey, provider);
+        let atomKey;
+        await chrome.storage.local.get(["atomKey"]).then((result) => {
+            if(result.atomKey !== undefined)
+                atomKey = result.atomKey;
+        });
+
+        const signer = new ethers.Wallet(atomKey, provider);
+
+        //wallet to pay gas fee
+        const wallet = new ethers.Wallet(atomKey, provider);
+        SetOwnerWallet(wallet);
+        SetOwnerAddress(wallet.address);
         
-    //     //contract abi
-    //     const abi = "Atom_abi";
+        //contract abi
+        const abi = Atom_abi;
 
-    //     //coneccting
-    //     let signer = provider.getSigner();
-    //     var contract = await new ethers.Contract("0x2eBD9a4E16b7dE2Af9cAC774D1E08087091093D2", abi, signer);
-    //     await contract.connect(wallet);
+        var contract = await new ethers.Contract("0x2eBD9a4E16b7dE2Af9cAC774D1E08087091093D2", abi, signer);
+        SetAtomContract(contract);
 
-    //     return contract;
-    // }
+        return contract;
+    }
 
-    let atom_contract;
+    async function UpdateBalance() {
 
-    // chrome.storage.local.get(["atomKey"]).then((result) => {
-    //     if(result.atomKey !== undefined && result.atomKey != "")
-    //      {
-    //         connectToAtom()
-    //             .then((contract) => {
-    //                 atom_contract = contract;
-    //                 console.log(atom_contract.address);
-    //             });
-    //      }
-    // });
+        let tempKey = "";
+        await chrome.storage.local.get(["atomKey"]).then((result) => {
+            if(result.atomKey !== undefined && result.atomKey != "")
+                tempKey = result.atomKey;
+        });
+        if(tempKey == "") return {};
 
+        //work -- here
+
+        let tempContract = await connectToAtom();
+        let tempAddress = (ownerWallet.address) + "";
+
+        let tempBalance = await tempContract.balanceOf("0x0466c4e4e648aE045bb5882734Ab2B14EF2f03eF");
+        tempBalance = tempBalance.toString();
+        console.log("str : " + tempBalance);
+
+        tempBalance = Number(tempBalance);
+        console.log("num : " + tempBalance);
+
+        tempBalance = tempBalance* 1.000 / 1000;
+        console.log("balance : " + tempBalance);
+        SetOwnerBalance(tempBalance);
+    }
+
+    async function TransferAtoms() {
+
+    }
+
+    //---- connection functions done ---
 
     return (
 
@@ -82,7 +106,7 @@ function Main() {
 
             {
                 isLogged ? (
-                    switcher ? ( <Send contract={atom_contract} switch = {UpdateSwitcher} /> ) : ( <Body contract={atom_contract} switch = {UpdateSwitcher} /> )
+                    switcher ? ( <Send connect={TransferAtoms} switch = {UpdateSwitcher} /> ) : ( <Body address={ownerAddress} balance={ownerBalance} connect={UpdateBalance} switch = {UpdateSwitcher} /> )
                 ) :
                 <Start logSwitch={LoadUserDetails} />
             }

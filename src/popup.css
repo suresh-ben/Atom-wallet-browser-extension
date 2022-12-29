@@ -74,6 +74,7 @@ h2 {
 
 .inter-links {
     text-decoration: none;
+    color: black;
 }
 
 .send-body a {
@@ -110,4 +111,8 @@ h2 {
     border-radius: 5px;
     margin: 10px 5px;
     padding: 0 5px;
+}
+
+.user-address {
+    color: grey;
 }

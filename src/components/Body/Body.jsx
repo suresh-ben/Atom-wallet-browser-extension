@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
 function Body(props) {
+
+    const [ contract, SetContract ] = useState("");
+    const [ ownerWallet, SetOwnerWallet ] = useState("");
+    const [ balance, SetBalance ] = useState(0);
+
+    useEffect(() => {
+        console.log("running");
+        props.connect()
+    },[]);
+
+
     return (
         <center>
             <h2>Atom wallet</h2>
 
+            <p className="user-address">
+                {props.address}
+            </p>
+
             <p className="amount">
-                10 <span> AM</span>
+                {props.balance} <span> AM</span>
             </p>
 
             <p className="conversion">

@@ -94,8 +94,22 @@ function Main() {
         SetOwnerBalance(tempBalance);
     }
 
-    async function TransferAtoms() {
+    async function TransferAtoms(toAddress, value) {
+        let tempKey = "";
+        await chrome.storage.local.get(["atomKey"]).then((result) => {
+            if(result.atomKey !== undefined && result.atomKey != "")
+                tempKey = result.atomKey;
+        });
+        if(tempKey == "") return {};
+        console.log("called");
 
+        //work -- here
+        let tempContract = await connectToAtom();
+        console.log(tempContract);
+
+        await tempContract.transfer(toAddress, value);
+        
+        return true;
     }
 
     //---- connection functions done ---
@@ -106,7 +120,7 @@ function Main() {
 
             {
                 isLogged ? (
-                    switcher ? ( <Send connect={TransferAtoms} switch = {UpdateSwitcher} /> ) : ( <Body address={ownerAddress} balance={ownerBalance} connect={UpdateBalance} switch = {UpdateSwitcher} /> )
+                    switcher ? ( <Send transfer={TransferAtoms} switch = {UpdateSwitcher} /> ) : ( <Body address={ownerAddress} balance={ownerBalance} connect={UpdateBalance} switch = {UpdateSwitcher} /> )
                 ) :
                 <Start logSwitch={LoadUserDetails} />
             }

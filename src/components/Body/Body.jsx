@@ -9,9 +9,14 @@ function Body(props) {
 
     useEffect(() => {
         console.log("running");
-        props.connect()
+        props.connect();
     },[]);
 
+    function OpenFaucet() {
+        chrome.tabs.create({
+            url: 'https://atom-faucet.onrender.com/'
+        });      
+    }
 
     return (
         <center>
@@ -30,7 +35,7 @@ function Body(props) {
             </p>
 
             <div className="links-container">
-                <a className="inter-links" href="./link">
+                <a className="inter-links" onClick={OpenFaucet}>
                     <img src="../../images/faucet.png" alt="faucet" />
                     <p>Get atoms</p>
                 </a>
